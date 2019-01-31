@@ -27,3 +27,17 @@ class Net(nn.Module):
         self.fc1 = nn.Linear(11*11*256,1000)
         self.fc2 = nn.Linear(1000,1000)
         self.fc3 = nn.Linear(1000, 136)
+
+    def forward(self, x):
+
+        x = self.pool1(self.bn1(F.relu(self.conv1(x))))
+        x = self.pool1(self.bn2(F.relu(self.conv2(x))))
+        x = self.pool1(self.bn3(F.relu(self.conv3(x))))
+        x = self.pool1(self.bn4(F.relu(self.conv4(x))))
+
+        x = x.view(x.size(0), -1)
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
+
+        return x 
